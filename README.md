@@ -1,0 +1,1 @@
+# projeto_docker_wordpress_aws
