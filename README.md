@@ -192,8 +192,6 @@ para criar o EFS clique em create file system, proxima tela coloque um nome exem
 
 -----
 
-
-
 ## :heavy_check_mark: Criar uma instancia EC2 :computer:
 
 Para criar uma instância EC2 na AWS, acesse a console da AWS e pesquise por EC2 ou vá até "Instances". Em seguida, procure por "Launch instance".
@@ -248,44 +246,79 @@ na tela do terminal confirme com "yes" e acesse a maquina.
 
 <hr>
 
+Atualize o sistema:
+```
+sudo apt update && sudo apt upgrade -y 
+```
+
+Instale pacotes uteis como NFS, Docker, mysql-client
+```
+sudo apt install -y nfs-common docker.io mysql-client
+```
+
+Inicie o docker caso necessario:
+```
+sudo systemctl start docker 
+```
+
+Adicionar o usuario ubuntu ao grupo docker:
+```
+sudo usermod -aG docker ubuntu
+```
+
+Crie o diretorio no sistema de arquivos
+```
+sudo mkdir -p /mnt/efs
+```
+
+montar um sistema de arquivos NFS:
+```
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 172.18.0.188:/ /mnt/efs
+```
+
+Recaregue os arquivos de configuração:
+```
+sudo systemctl daemon-reload
+```
+Comando para adicionar ntrada ao arquivo pra serem montados automaticamente:
+```
+echo "172.18.0.188:/ /mnt/efs nfs4 defaults,nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0" | sudo tee -a /etc/fstab
+```
 
 
-#Atualizar a lista de pacotes e instalar dependencias necesarias
-sudo apt update 
-sudo apt install -y curl gnupg2 ca-certificates lsb-release
+Recaregue nvamente os arquivos de configuração:
+```
+sudo systemctl daemon-reload
+```
 
-#adicionar a chave GPG oficial do docker
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+Altere a propriedade do diretorio para o servidor ter permissao de leitura:
+```
+sudo chown -R www-data:www-data /mnt/efs
+```
 
-#atualizar novamente
-sudo apt update 
+Altere as permissoes do diretorio no caminho /mnt/efs:
+```
+sudo chmod -R 775 /mnt/efs
+```
 
-#Instalar o docker 
-sudo apt install docker-ce docker-ce-cli containerd.io -y
-
-#verificar se o docker foi instalado e a versão 
-sudo docker --version
-
-#para teste rode um container hello-worl
-d
-sudo docker run hello-world
-
-#verifique o teste com docker ps e ps -a
-docker ps 
-docker ps -a 
-
-#baixar ultima versao do docker-compose
+Faça o download do binario do docker-compose:
+```
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.34.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+Mude as permissoes para execução:
+```
 sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version
+```
 
-#criar um diretorio para armazenar nosso arquivo docker-compose.yml
-no diretorio raiz / crie um diretorio com mkdir projeto-wordpress
-cd projeto-wordpress
-sudo nano /projeto-wordpress/docker-compose.yml
+crie o arquivo docker compose em <b>cd /home/ubuntu<b>:
 
-#digite o script abaixo e salve o arquivo com ctrl + o
+``` 
+sudo nano docker-compose.yml 
+
+``` 
+e escreva o codigo abaixo.
+
 ```
 services:
   wordpress:
@@ -293,28 +326,25 @@ services:
     restart: always
     container_name: wordpress_site
     ports:
-      - "80:80" # para acessar o WordPress no navegador por http://localhost:80
+      - "80:80"
     environment:
-      WORDPRESS_DB_HOST: identificaão do seu RDS na AWS
-      WORDPRESS_DB_USER: nome do usuario do banco RDS.
-      WORDPRESS_DB_PASSWORD: senha criada no banco RDS.
-      WORDPRESS_DB_NAME: nome do banco de dados
+      WORDPRESS_DB_HOST: {endpoint}.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: senha do banco
+      WORDPRESS_DB_NAME: nome do banco
     volumes:
-      - wordpress:/var/www/html
-
-volumes:
-  wordpress:
+      - /mnt/efs:/var/www/html
 ```
 
-#execute o docker compose
+suba os container com o comando docker-compose:
+```
 sudo docker-compose up -d
-
-#verifique os containers 
+```
+verifique os containers 
+```
 docker ps 
 docker ps -a
-
-# instale o mysql para verificar o banco
-sudo apt install -y mysql-client
+```
 
 # testando o banco de dados
 mysql -h db-wordpress.ck1uq420e02n.us-east-1.rds.amazonaws.com -u admin -p -e "SHOW DATABASES;"
@@ -325,6 +355,12 @@ Abra o navegador e digite o ip publico da instancia + porta de acesso exemplo
 192.168.0.100:80 e aparecera a tela de configuração do wordpress.
 
 # Usando User-Data e criando uma launch template
+
+No console da AWS selecione "Launch template" e "create launch template" coloque um nome exemplo: ServerUbuntu, coloque uma descrição para sua launch template ex: meu projeto wordpress, deixe selecionado Auto scalling guidance para EC2 Auto Scaling. Em aplication e OS image selecione a imagem do Ubuntu Server, tipo t2.micro, selcione um par de chaves criado, se não tiver crie aqui memso uma para acessar via ssh nossa instância. Em Networking settings deixe sem para podermos selecionar mais tarde. Em "Advanced network configuration" ative o auto assing ip publiq. caso tenha Tags adicione, Em advanced details no final da pagina acrescente o User-data criado abaixo. cheque as informações e clique em criar.
+
+
+
+
 ```
 #!/bin/bash
 
