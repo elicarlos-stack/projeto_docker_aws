@@ -247,6 +247,7 @@ na tela do terminal confirme com "yes" e acesse a maquina.
 <hr>
 
 Atualize o sistema:
+
 ```
 sudo apt update && sudo apt upgrade -y 
 ```
@@ -412,5 +413,5 @@ sleep 15
 sudo docker-compose up -d
 ```
 
-
+O projeto pode sofrer altereações futuras.
 
