@@ -108,25 +108,24 @@ Agora em Routes, vamos editar a tabela de roteamento (Edit Routes). Clique em Ed
 
 
 
---- fazer depois NAT Gateway -----
-
-Agora para criar o NAT gateway para a subnet privada ter acesso a internet. para isto ir em VPC no menu lateral em NAT gateway clique criar NAT gateway, informe um nome, selecione uma subnet public, aloque um Elastic Ip allocation ID. 
+Agora para criar o NAT gateway para a subnet privada ter acesso a internet. Vá em VPC no menu lateral em NAT gateway clique criar NAT gateway, informe um nome, selecione uma subnet public, aloque um Elastic Ip allocation ID. 
 logo apos ir em Rote tables para criar a tabela de roteamento para o NET gateway e assossiar as subnets privadas.
 
 De um nome para a route table privada exemplo: "rtb-private-wordpress" selecione a nossa vpc "wp-docker-dev"
 
-<img src="img/rtb_private.png" alt="" />
+<img src="img/route-table-private.png" alt="" />
 
 Agora assossiar a subnet privadas.
 
-<img src="img/associate_private.png" alt="" />
+<img src="img/route-table-private1.png" alt="" />
 
 Agora iremos editar em Routes para que elas tenham acesso a internet. ir em "edite routes" adicionar a rota para NAT gateway.
 
-<img src="img/associate_private1.png" alt="" />
+<img src="img/route-table-private2.png" alt="" />
+
+<img src="img/route-table-private3.png" alt="" />
 
 
----- FIM Nat Gateway -----
 
 Vamos criar um grupo de segurança(Security group), nosso grupo de segurança irá atua como firewall virtual para as instâncias do EC2 para controlar o tráfego de entrada e de saída. 
 Para criar na console da AWS pesquise por EC2 ou digite na barra de pesquisa, procure por "Network & Security na lateral esquerda depois "criar security group" (Create security group), 
@@ -138,23 +137,9 @@ Informe um nome, descrição é opcional e clique em criar.
 
 
 
-
-
-# Criar o RDS 
-para criar o RDS no console da AWS pesquise por database, mostrar mais (show more) escolha e clique m Aurora and RDS
-"create database", deixe como standard create, escolha o banco MySQL, em templates pode escolher Free tier 
-em "Availability and durability" selecione "Single-AZ DB instance deployment" sem A-Z.
-em "Settings" nome da instancia do banco de dados de um nome exemplo: db-wordpress, em "Credential Settings" deixe como admin, "self managed" digite uma senha e confirme a senha no campo abaixo. em "Instance configuration" escolha "burstable classes" e selecione o tipo "db.t3.micro", deixe "Storage" como padrão, "virtual private cloud(VPC) selecione a vpc criada: wp-docker-dev.
-as outras configurações deixe padrão, em "Aditional configuration" database options coloque um nome para o banco de dados exemplo: site_wordpress. logo após cheque as informações e clique em criar banco de dados.
-
-na janela a seguir aguarde a confirmação da criação do banco.
-
-
-
-
 # Criar um novo grupo de segurança para o RDS para uma organização da infraestrutura:
 Essa abordagem é útil para separar permissões e gerenciá-las de forma mais estruturada.
-siga os passos. acesse o console do AWS EC2. No menu lateral em "Security" selecinar "Security groups".
+siga os passos. acesse o console do AWS EC2. No menu lateral em "Network & Security" selecinar "Security groups".
 Crie um novo grupo de segurança, por exemplo crie com o nome: my-rds-connection.
 selecione a VPC em que nossa instancia se encontra com o nome "wp-docker-dev".
 
@@ -165,6 +150,47 @@ Em "Outbounds" regras de saida deixe padrao por enquanto. clique em criar grupo 
 Importante lembre-se de:
 Garantir que tanto o RDS quanto a instância EC2 estejam na mesma VPC para que possam se comunicar.
 Se você estiver acessando o RDS de fora (como do seu computador local), será necessário adicionar o IP público ou 0.0.0.0/0 às regras de entrada temporariamente (não recomendado).
+
+
+# Criar grupo de segurança para o EFS 
+Ir em Security groups, create security groups de um nome exemplo: sg_efs_wordpress, descrição caso queira como grupo de segurança efs do wordpress, selecione a mesma VPC das instâncias, em Inbound rules adicione o tipo NFS, porta range deve estar como 2049 para liberar acesso para as regras de entrada da nossa instancia, em source deixe como custom e selecione o security group das instâncias.
+Em outbound deixe regras para "All trafic"  e clique em criar.
+<img src="img/sg-efs.png" alt="" />
+
+
+
+# Criar o RDS 
+para criar o RDS no console da AWS pesquise por database, mostrar mais (show more) escolha e clique m Aurora and RDS
+"create database", deixe como standard create, escolha o banco MySQL, em templates pode escolher Free tier 
+em "Availability and durability" selecione "Single-AZ DB instance deployment" sem A-Z.
+em "Settings" nome da instancia do banco de dados de um nome exemplo: db-projeto-wordpress, em "Credential Settings" deixe como admin, "self managed" digite uma senha e confirme a senha no campo abaixo. em "Instance configuration" escolha "burstable classes" e selecione o tipo "db.t3.micro", deixe "Storage" como padrão,  em "Connectivity" selecione a vpc "wp-docker-dev",  em "Existing VPC security groups" selecione a vpc security group do RDS criada: "my-rds-connection".
+as outras configurações deixe padrão, em "Aditional configuration" database options coloque um nome para o banco de dados em "initial database name" exemplo: db_wordpress. logo após cheque as informações e clique em criar banco de dados.
+
+na janela a seguir aguarde a confirmação da criação do banco.
+
+<img src="img/rds.png" alt="" />
+<img src="img/rds2.png" alt="" />
+<img src="img/rds3.png" alt="" />
+<img src="img/rds4.png" alt="" />
+<img src="img/rds5.png" alt="" />
+<img src="img/rds6.png" alt="" />
+<img src="img/rds7.png" alt="" />
+<img src="img/rds9.png" alt="" />
+<img src="img/rds8.png" alt="" />
+
+Enquanto o banco é criado podemos ir criando o nosso EFS.
+
+# Criar o EFS
+para criar o EFS clique em create file system, proxima tela coloque um nome exemplo: "Template-Server-Wordpress" selecione a VPC onde estão as instancias, depois clique em "customize", proxima tela verifique os dados, deixe como Regional, Lifecycle management deixe tudo como nenhum (none), em "performance settings" deixe como "Bursting", adicione uma tag para facilitar a identificação. exemplo: tag key como "Name" e tag value "Efs - conecta ec2". Na proxima tela em Network verifique se a VPC da instância está selecionada. Em Mount targets deixe apenas selecionado o grupo de segurança(Security groups) que criamos para o EFS chamado "sg_efs_wordpress".
+
+<img src="img/efs1.png" alt="" />
+<img src="img/efs2.png" alt="" />
+<img src="img/efs3.png" alt="" />
+<img src="img/efs4.png" alt="" />
+
+ siga nas proximas telas Next e depois criar(Create).
+
+-----
 
 
 
@@ -241,7 +267,8 @@ sudo apt install docker-ce docker-ce-cli containerd.io -y
 #verificar se o docker foi instalado e a versão 
 sudo docker --version
 
-#para teste rode um container hello-word
+#para teste rode um container hello-worl
+d
 sudo docker run hello-world
 
 #verifique o teste com docker ps e ps -a
@@ -254,45 +281,30 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 #criar um diretorio para armazenar nosso arquivo docker-compose.yml
-sudo nano /data/projeto-wordpress/docker-compose.yml
+no diretorio raiz / crie um diretorio com mkdir projeto-wordpress
+cd projeto-wordpress
+sudo nano /projeto-wordpress/docker-compose.yml
 
 #digite o script abaixo e salve o arquivo com ctrl + o
-
+```
 services:
   wordpress:
     image: wordpress
     restart: always
-    container_name: wordpress
+    container_name: wordpress_site
     ports:
-      - "8080:80" # para acessar o WordPress no navegador por http://localhost:8080
+      - "80:80" # para acessar o WordPress no navegador por http://localhost:80
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_HOST: identificaão do seu RDS na AWS
+      WORDPRESS_DB_USER: nome do usuario do banco RDS.
+      WORDPRESS_DB_PASSWORD: senha criada no banco RDS.
+      WORDPRESS_DB_NAME: nome do banco de dados
     volumes:
       - wordpress:/var/www/html
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
-    restart: always
-    container_name: wordpress_db
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-    volumes:
-      - db:/var/lib/mysql
 
 volumes:
   wordpress:
-  db:
-
+```
 
 #execute o docker compose
 sudo docker-compose up -d
@@ -301,10 +313,68 @@ sudo docker-compose up -d
 docker ps 
 docker ps -a
 
+# instale o mysql para verificar o banco
+sudo apt install -y mysql-client
+
+# testando o banco de dados
+mysql -h db-wordpress.ck1uq420e02n.us-east-1.rds.amazonaws.com -u admin -p -e "SHOW DATABASES;"
 
 
+# acessesando o wordpress no navegador
+Abra o navegador e digite o ip publico da instancia + porta de acesso exemplo
+192.168.0.100:80 e aparecera a tela de configuração do wordpress.
 
+# Usando User-Data e criando uma launch template
+```
+#!/bin/bash
 
+sudo apt update && sudo apt upgrade -y 
+
+sudo apt install -y nfs-common docker.io mysql-client
+
+sudo systemctl start docker 
+
+sudo usermod -aG docker ubuntu
+
+sudo mkdir -p /mnt/efs
+
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 172.18.0.188:/ /mnt/efs
+
+sudo systemctl daemon-reload
+
+echo "172.18.0.188:/ /mnt/efs nfs4 defaults,nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0" | sudo tee -a /etc/fstab
+
+sudo systemctl daemon-reload
+
+sudo chown -R www-data:www-data /mnt/efs
+
+sudo chmod -R 775 /mnt/efs
+
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.34.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+cat <<EOF > /home/ubuntu/docker-compose.yml
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    container_name: wordpress_site
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: db-projeto-wordpress.ck1uq420e02n.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: 22X8ANXSLe2Yah.
+      WORDPRESS_DB_NAME: db_wordpress
+    volumes:
+      - /mnt/efs:/var/www/html
+EOF
+
+sleep 15
+
+sudo docker-compose up -d
+```
 
 
 
