@@ -136,7 +136,7 @@ Agora iremos editar em Routes para que elas tenham acesso a internet. ir em "edi
 <img src="img/route-table-private3.png" width="600" alt="" />
 
 
-## Security group das instâncias
+## :heavy_check_mark: Security group das instâncias
 Vamos criar um grupo de segurança(Security group), nosso grupo de segurança irá atua como firewall virtual para as instâncias do EC2 para controlar o tráfego de entrada e de saída. 
 Para criar na console da AWS pesquise por EC2 ou digite na barra de pesquisa, procure por "Network & Security na lateral esquerda depois "criar security group" (Create security group), 
 Informe um nome, descrição é opcional e clique em criar.
@@ -146,7 +146,7 @@ Informe um nome, descrição é opcional e clique em criar.
 <img src="img/securityGP2.png" width="600" alt=""><br>
 
 
-## Criar um novo grupo de segurança para o RDS para uma organização da infraestrutura:
+## :heavy_check_mark: Criar um novo grupo de segurança para o RDS para uma organização da infraestrutura:
 Essa abordagem é útil para separar permissões e gerenciá-las de forma mais estruturada.
 siga os passos. acesse o console do AWS EC2. No menu lateral em "Network & Security" selecinar "Security groups".
 Crie um novo grupo de segurança, por exemplo crie com o nome: my-rds-connection.
@@ -163,20 +163,20 @@ Se você estiver acessando o RDS de fora (como do seu computador local), será n
 <img src="img/securitygroupRDS.png" width="600" alt=""><br>
 
 
-## Criar grupo de segurança para o EFS 
+## :heavy_check_mark: Criar grupo de segurança para o EFS 
 Ir em Security groups, create security groups de um nome exemplo: sg_efs_wordpress, descrição caso queira como grupo de segurança efs do wordpress, selecione a mesma VPC das instâncias, em Inbound rules adicione o tipo NFS, porta range deve estar como 2049 para liberar acesso para as regras de entrada da nossa instancia, em source deixe como custom e selecione o security group das instâncias.
 Em outbound deixe regras para "All trafic"  e clique em criar.
 <img src="img/sg-efs.png" width="600" alt="" />
 
 
-## security group do load balancing
+## :heavy_check_mark: Criar grupo de segurança do load balancing
 Ir em EC2, Network e Security, Security groups, clique em create security group de um nome ex: "sg_load_balancer" , descrição "Security group para load balancer", selecione a VPC onde estão nossas instâncias, defnir regras de entrada para tipo "http" porta 80 coloque uma descrição caso queira. regras de saida deixe para todos "all trafic" e clique em criar.
 
 <img src="img/sg_load_balance1.png" width="600" alt="" />
 <img src="img/sg_load_balance2.png" width="600" alt="" />
 
 
-# Criar o RDS 
+# Etapa 2: Criar o RDS 
 para criar o RDS no console da AWS pesquise por database, mostrar mais (show more) escolha e clique m Aurora and RDS
 "create database", deixe como standard create, escolha o banco MySQL, em templates pode escolher Free tier 
 em "Availability and durability" selecione "Single-AZ DB instance deployment" sem A-Z.
@@ -197,7 +197,7 @@ Na janela a seguir aguarde a confirmação da criação do banco.
 
 Enquanto o banco é criado podemos ir criando o nosso EFS.
 
-# Criar o EFS
+# Etapa 3: Criar o EFS
 para criar o EFS clique em create file system, proxima tela coloque um nome exemplo: "Template-Server-Wordpress" selecione a VPC onde estão as instancias, depois clique em personalizar(customize), proxima tela verifique os dados, deixe como Regional, Lifecycle management deixe tudo como nenhum (none), em "performance settings" deixe como Intermitente(Bursting), adicione uma tag para facilitar a identificação. exemplo: tag key como "Name" e tag value "Efs - conecta ec2". Na proxima tela em Network verifique se a VPC da instância está selecionada. Em Mount targets deixe apenas selecionado o grupo de segurança(Security groups) que criamos para o EFS chamado "sg_efs_wordpress".
 
 <img src="img/efs1.png" width="600" alt="" />
@@ -207,7 +207,7 @@ para criar o EFS clique em create file system, proxima tela coloque um nome exem
 
  Siga nas proximas telas Next e depois criar(Create).
 
-# :heavy_check_mark: Criar uma instancia EC2 :computer:
+# Etapa 4: Criar uma instancia EC2 :computer:
 
 Para criar uma instância EC2 na AWS, acesse a console da AWS e pesquise por EC2 ou vá até "Instances". Em seguida, procure por "Launch instance".
 
@@ -287,7 +287,7 @@ Crie o diretorio no sistema de arquivos
 sudo mkdir -p /mnt/efs
 ```
 
-montar um sistema de arquivos NFS:
+:heavy_check_mark: montar um sistema de arquivos NFS:
 os numeros IPs podem sofrer alterações. coloque o que corresponda ao seu EFS criado. caminho, vá em EFS na console da AWS selecione sistema de arquivos, selecione o EFS criado e clique nele, na proxima tela clique Anexar(attach) escolhar montar via DNS ou IP. neste projeto foi montado via IP.
 ```
 sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 172.18.0.188:/ /mnt/efs
@@ -373,7 +373,7 @@ mysql -h db-wordpress.ck1yq449e02b.us-east-2.rds.amazonaws.com" -u admin -p -e "
 Abra o navegador e digite o ip publico da instancia + porta de acesso exemplo
 192.168.0.100:80 e aparecera a tela de configuração do wordpress.
 
-# Usando User-Data e criando uma launch template
+# Etapa 5: Usando User-Data e criando uma launch template
 
 No console da AWS selecione "Launch template" e "create launch template" coloque um nome exemplo: ServerUbuntu, coloque uma descrição para sua launch template ex: meu projeto wordpress, deixe selecionado Auto scalling guidance para EC2 Auto Scaling. Em aplication e OS image selecione a imagem do Ubuntu Server, tipo t2.micro, selcione um par de chaves criado, se não tiver crie aqui memso uma para acessar via ssh nossa instância. Em Networking settings deixe sem para podermos selecionar mais tarde. Em "Advanced network configuration" ative o auto assing ip publiq. caso tenha Tags adicione, Em advanced details no final da pagina acrescente o User-data criado abaixo. cheque as informações e clique em criar.
 
@@ -429,17 +429,26 @@ sleep 15
 sudo docker-compose up -d
 ```
 
-# Criando Load Balancer
+# Etapa 6: Criando Load Balancer
 Na AWS ir em EC2 depois Load Balancers, para este projeto utilizaremos Classic Load Balancer(não recomendado), para isto mude para Criar Classic Load Balancer, nome ex: "wp-load-balancer", em esquema deixe como publico depois iremos mudar para privado, em mpeamento de rede escolha (02) zonas de disponibilidade e a VPC e subnet onde estão nossas instâncias publicas, em grupos de segurança devemos selecionar o Security group que criamos para o load balancer com o nome de "sg_load_balancer", em "Health chech" deixe selecionado target HTTP:80/index.php parao wordpress, deixe o restante padrão e caso tenha instancia criada adicione senão deixe em branco, revise o Load Balance e clique em criar.
 
 <img src="img/wp-load-balance1.png" width="600" alt="">
 
 
-# Criando Auto Scaling Group 
+# Etapa 7: Criando Auto Scaling Group 
 
 Na AWS ir em EC2 depois Auto Scaling Groups, clique em "create Auto Scaling Group" de um nome ex: "wordpress-auto-scaling", escolha nossa launch template que criamos chamada "ServerUbuntu" clique em proximo, selecione a VPC em que estão nossas instâncias, adicione as 2 subnetes publicas criadas. em distribuição da zona de disponibilidade escolha Somente equilibrado e proximo.  Balanceamento de carga selecione Anexar um Balanceamento de carga existente, escolha entre Classic Load Balancers e selecione o nosso load balancer Criado com o nome de "wp-load-balancer" e proximo, configurando o tamanho do grupo escolha a capacidade desejada, no nosso exemplo capacidade desejada será 3, minimo 2 e max 5. em ajuste de escala automatica escolha politica de dimensionamente com monitoramento que é uma metrica para destino no Cloudwatch. neste exemplo escolhemos a Média de utilização da CPU. politica de manutenção de instãncia deixe como Nenhuma politica e em configurações adicionais como Padrão. Clique em proximo 2x, revise e depois clique em criar grupo de Auto Scaling.
 
 <img src="img/wordpress-auto-scaling1.png" width="600" alt="">
+
+# Etapa 8:Monitoramento no CloudWatch
+Na EC2 em Grupo de Auto Scaling procure a aba Escalabilidade automatica e clique em criar politica de escalabilidade automatica, tipo de politica escolha escalabilidade simples, de um nome ex: "escalabilidade ASG CPU", em executar ação adicione 2, e cique em criar. 
+
+Depois ir na console AWS e procure por CloudWatch, ir Em Alarme, criar alarme, selecione EC2, By Auto Scaling Group, procure por CPUUtilization e depois criar alarme, proxima tela selecione maior  ou igual coloque 80 e proximo, remova notificação, ir em ação de auto scaling, selecione a politica de escalabilidade criada no passo anterior avançe, de uma nome au alarme ex: alarme ASG CPU e depois Adicionar. e criaralarme
+
+<img src="img/cloudwatch1.png" width="600" alt="">
+
+<img src="img/cloudwatch2.png" width="600" alt="">
 
 
 ## Acesse a pagina no Navegar 
