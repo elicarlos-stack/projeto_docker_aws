@@ -183,9 +183,9 @@ as outras configurações deixe padrão, em "Aditional configuration" database o
 
 Na janela a seguir aguarde a confirmação da criação do banco.
 
-<img src="img/rds.png" width="400" height="600" alt="" />
-<img src="img/rds2.png" width="400" height="600" alt="" />
-<img src="img/rds3.png" width="400" height="600" alt="" />
+<img src="img/rds.png" width="600"  alt="" />
+<img src="img/rds2.png" width="600" alt="" />
+<img src="img/rds3.png" width="600" alt="" />
 <img src="img/rds4.png" width="600" alt="" />
 <img src="img/rds5.png" width="600" alt="" />
 <img src="img/rds6.png" width="600" alt="" />
