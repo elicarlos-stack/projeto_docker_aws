@@ -1,0 +1,14 @@
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    container_name: wordpress_site
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: db-projeto-wordpress.ck1uq420e02n.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: 22X8ANXSLe2Yah.
+      WORDPRESS_DB_NAME: db_wordpress
+    volumes:
+      - /mnt/efs:/var/www/html
