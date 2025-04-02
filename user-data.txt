@@ -35,10 +35,10 @@ services:
     ports:
       - "80:80"
     environment:
-      WORDPRESS_DB_HOST: db-projeto-wordpress.ck1uq420e02n.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_HOST: db-projeto-wordpress.ck2uq470e02b.us-east-1.rds.amazonaws.com
       WORDPRESS_DB_USER: admin
-      WORDPRESS_DB_PASSWORD: 22X8ANXSLe2Yah.
-      WORDPRESS_DB_NAME: db_wordpress
+      WORDPRESS_DB_PASSWORD: $senhabancodedados
+      WORDPRESS_DB_NAME: $nomedobancodedados
     volumes:
       - /mnt/efs:/var/www/html
 EOF
