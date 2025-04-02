@@ -17,7 +17,7 @@ Sou estudante de Segurança da Informação, e atualmente estou desenvolvendo ha
 
  <img src="https://github.com/user-attachments/assets/5f1ff0b7-4dce-4a0b-b0f9-11de88c85c44" width="300px" hight="400">
 
- <img src="https://github.com/elicarlos-stack/projeto_docker_aws/issues/1#issue-2967366782" width="300px" hight="400">
+ <img src="https://github.com/user-attachments/assets/0215cf59-1bae-43d4-accf-d7fd17e443ce" width="300px" hight="400">
 
 
 </div>
