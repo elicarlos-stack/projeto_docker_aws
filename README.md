@@ -62,8 +62,8 @@ Antes de criarmos a nossa Instância EC2 primeiramente vamos criar uma VPC na AW
 
 Em VPC setting você pode escolher por criar através do VPC only ou VPC and more (Este modo permite criar a VPC junto com recursos adicionais necessários, como sub-redes, tabelas de rotas, gateways da Internet e gateways NAT). Neste exemplo escolheremos VPC only para criar de forma manual, após escolher informe um nome para vpc ex: "wp-docker-dev" e o bloco IPV4 CIDR para a VPC neste exemplo usei 172.18.0.0/20. as outras opções pode deixar como default e finalize clicando em criar VPC (Create VPC).
 
-<img src="img/img_vpc2.png" alt="" width="300" height="200" />
-<img src="img/img_vpc3.png" alt="" width="600px" hight="600px" />
+<img src="img/img_vpc2.png" alt="" width="400" height="300" />
+<img src="img/img_vpc3.png" alt="" width="600px" hight="400px" />
 
 
 <div>Agora criaremos 2 subnets privadas e 2 subnets públicas conforme a imagem abaixo. Para isso, na console da AWS, vá para VPC e clique em Subnets -> Create Subnet. Selecione a VPC criada anteriormente com o nome "wp-docker-dev". Crie cada uma das subnets com os seguintes nomes: "wp-docker-dev-public01", "wp-docker-dev-public02", "wp-docker-dev-private01" e "wp-docker-dev-private02". Selecione a zona de disponibilidade para cada subnet, preferencialmente uma em cada zona. Informe o bloco CIDR da subnet IPv4. para criar outras subnets basta clicar adicionar nova subnet (em Add new subnet).</div>
@@ -80,11 +80,11 @@ Em VPC setting você pode escolher por criar através do VPC only ou VPC and mor
 > As tags são opcionais, mas recomenda-se atribuir nomes a elas, pois ajudam a categorizar e organizar seus recursos na AWS.
 
 <div>
-<img src="img/img_sub1.png" width="600" alt="" />
+<img src="img/img_sub1.png" width="600" height="300" alt="" />
 
-<img src="img/img_sub2.png" width="600" alt="" />
+<img src="img/img_sub2.png" width="600" height="300" alt="" />
 
-<img src="img/img_sub3.png" width="600" alt="" />
+<img src="img/img_sub3.png" width="600" height="300" alt="" />
 
 </div>
 
