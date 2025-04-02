@@ -41,9 +41,13 @@ DevSecOps - Docker</div>
 # Índice
 
 1. [Etapa 1: Configuração do Ambiente](#etapa-1-configuração-do-ambiente)
-2. [Configuração do Servidor](##etapa-2-configuração-do-servidor)
-3. [Monitoramento e Notificações](##etapa-3-monitoramento-e-notificações)
-4. [Automação e Testes](##etapa-4-automação-e-testes)
+2. [Etapa 2: Criar o RDS](#etapa-2-criar-o-RDS)
+3. [Etapa 3: Criar o EFS](#etapa-3-criar-EFS)
+4. [Criar uma instancia EC2](##Criar-uma-instancia-EC2)
+5. [Usando User-Data e criando uma launch template](#Usando-User-Data-e-criando-uma-launch-template)
+6. [Criando Load Balancer](##Criando-Load-Balancer)
+7. [Criando Auto Scaling Group](##Criando-Auto-Scaling-Group2)
+8. [Monitoramento no CloudWatch](##Monitoramento-no-CloudWatch)
 
 
 > [!NOTE]
@@ -112,7 +116,6 @@ Após a criação da tabela de roteamento, com a tabela de roteamento selecionad
 Agora em Routes, vamos editar a tabela de roteamento (Edit Routes). Clique em Edit e adicione uma nova rota. Para isso, clique em Add Route, insira 0.0.0.0/0 no campo Destination e selecione o Internet Gateway criado anteriormente no campo Target. Salve as mudanças.
 
 <img src="img/edit-routes-public.png" width="600" alt="" />
-
 
 
 Agora para criar o NAT gateway para a subnet privada ter acesso a internet. Vá em VPC no menu lateral em NAT gateway clique criar NAT gateway, informe um nome, selecione uma subnet public, aloque um Elastic Ip allocation ID. 
@@ -204,7 +207,7 @@ para criar o EFS clique em create file system, proxima tela coloque um nome exem
 
  Siga nas proximas telas Next e depois criar(Create).
 
-## :heavy_check_mark: Criar uma instancia EC2 :computer:
+# :heavy_check_mark: Criar uma instancia EC2 :computer:
 
 Para criar uma instância EC2 na AWS, acesse a console da AWS e pesquise por EC2 ou vá até "Instances". Em seguida, procure por "Launch instance".
 
@@ -361,12 +364,12 @@ docker ps
 docker ps -a
 ```
 
-# Testando o banco de dados
+### Testando o banco de dados
 codigo de exemplo:
 mysql -h db-wordpress.ck1yq449e02b.us-east-2.rds.amazonaws.com" -u admin -p -e "SHOW DATABASES;"
 
 
-# acessesando o wordpress no navegador
+### Acessesando o wordpress no navegador
 Abra o navegador e digite o ip publico da instancia + porta de acesso exemplo
 192.168.0.100:80 e aparecera a tela de configuração do wordpress.
 
@@ -426,20 +429,20 @@ sleep 15
 sudo docker-compose up -d
 ```
 
-## Criando Load Balancer
+# Criando Load Balancer
 Na AWS ir em EC2 depois Load Balancers, para este projeto utilizaremos Classic Load Balancer(não recomendado), para isto mude para Criar Classic Load Balancer, nome ex: "wp-load-balancer", em esquema deixe como publico depois iremos mudar para privado, em mpeamento de rede escolha (02) zonas de disponibilidade e a VPC e subnet onde estão nossas instâncias publicas, em grupos de segurança devemos selecionar o Security group que criamos para o load balancer com o nome de "sg_load_balancer", em "Health chech" deixe selecionado target HTTP:80/index.php parao wordpress, deixe o restante padrão e caso tenha instancia criada adicione senão deixe em branco, revise o Load Balance e clique em criar.
 
 <img src="img/wp-load-balance1.png" width="600" alt="">
 
 
-## Criando Auto Scaling Group 
+# Criando Auto Scaling Group 
 
 Na AWS ir em EC2 depois Auto Scaling Groups, clique em "create Auto Scaling Group" de um nome ex: "wordpress-auto-scaling", escolha nossa launch template que criamos chamada "ServerUbuntu" clique em proximo, selecione a VPC em que estão nossas instâncias, adicione as 2 subnetes publicas criadas. em distribuição da zona de disponibilidade escolha Somente equilibrado e proximo.  Balanceamento de carga selecione Anexar um Balanceamento de carga existente, escolha entre Classic Load Balancers e selecione o nosso load balancer Criado com o nome de "wp-load-balancer" e proximo, configurando o tamanho do grupo escolha a capacidade desejada, no nosso exemplo capacidade desejada será 3, minimo 2 e max 5. em ajuste de escala automatica escolha politica de dimensionamente com monitoramento que é uma metrica para destino no Cloudwatch. neste exemplo escolhemos a Média de utilização da CPU. politica de manutenção de instãncia deixe como Nenhuma politica e em configurações adicionais como Padrão. Clique em proximo 2x, revise e depois clique em criar grupo de Auto Scaling.
 
 <img src="img/wordpress-auto-scaling1.png" width="600" alt="">
 
 
-# Acesse a pagina no Navegar 
+## Acesse a pagina no Navegar 
 Abra um navegador de preferencia e digite o dns do load balancer exemplo:
 
 http://http://wp-load-balancer-1281376271.us-east-1.elb.amazonaws.com/
