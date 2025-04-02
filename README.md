@@ -139,9 +139,9 @@ Vamos criar um grupo de segurança(Security group), nosso grupo de segurança ir
 Para criar na console da AWS pesquise por EC2 ou digite na barra de pesquisa, procure por "Network & Security na lateral esquerda depois "criar security group" (Create security group), 
 Informe um nome, descrição é opcional e clique em criar.
 
-<img src="img/securityGP.png" width="600" alt=""><br>
-<img src="img/securityGP1.png" width="600" alt=""><br>
-<img src="img/securityGP2.png" width="600" alt=""><br>
+<img src="img/securityGP.png" width="500" height="300" alt=""><br>
+<img src="img/securityGP1.png" width="500" height="200" alt=""><br>
+<img src="img/securityGP2.png" width="300" height="200" alt=""><br>
 
 
 ## :heavy_check_mark: Criar um novo grupo de segurança para o RDS para uma organização da infraestrutura:
