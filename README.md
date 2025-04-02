@@ -140,8 +140,8 @@ Para criar na console da AWS pesquise por EC2 ou digite na barra de pesquisa, pr
 Informe um nome, descrição é opcional e clique em criar.
 
 <img src="img/securityGP.png" width="500" height="300" alt=""><br>
-<img src="img/securityGP1.png" width="500" height="200" alt=""><br>
-<img src="img/securityGP2.png" width="300" height="200" alt=""><br>
+<img src="img/securityGP1.png" width="300" height="200" alt=""><br>
+<img src="img/securityGP2.png" width="400" height="200" alt=""><br>
 
 
 ## :heavy_check_mark: Criar um novo grupo de segurança para o RDS para uma organização da infraestrutura:
@@ -183,7 +183,7 @@ as outras configurações deixe padrão, em "Aditional configuration" database o
 
 Na janela a seguir aguarde a confirmação da criação do banco.
 
-<img src="img/rds.png" width="600" alt="" />
+<img src="img/rds.png" width="400" height="400" alt="" />
 <img src="img/rds2.png" width="600" alt="" />
 <img src="img/rds3.png" width="600" alt="" />
 <img src="img/rds4.png" width="600" alt="" />
