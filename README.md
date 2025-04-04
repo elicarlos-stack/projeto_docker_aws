@@ -133,6 +133,11 @@ Agora iremos editar em Routes para que elas tenham acesso a internet. ir em "edi
 
 <img src="img/route-table-private3.png" width="600" alt="" />
 
+## para facilitar podemos criar a VPC de forma automatica na opção VPC e muito mais (VPC and More)
+Todas as subnetes, route table, internet gatway, Nat Gateway serão criadas de forma automatica para isso acesse o Console AWS e vá para a seção VPC.
+Clique em Create VPC e selecione a opção VPC and more. Crie uma VPC com 2 sub-redes públicas e 2 sub-redes privadas. Selecione duas Availability Zones (AZs) e um NAT Gateway.Finalize a criação clicando em Create VPC.
+
+<img src="img/vpcmore.png" width="600" alt="" />
 
 ## :heavy_check_mark: Security group das instâncias
 Vamos criar um grupo de segurança(Security group), nosso grupo de segurança irá atua como firewall virtual para as instâncias do EC2 para controlar o tráfego de entrada e de saída. 
@@ -428,7 +433,7 @@ sudo docker-compose up -d
 ```
 
 # Etapa 6: Criando Load Balancer
-Na AWS ir em EC2 depois Load Balancers, para este projeto utilizaremos Classic Load Balancer(não recomendado), para isto mude para Criar Classic Load Balancer, nome ex: "wp-load-balancer", em esquema deixe como publico depois iremos mudar para privado, em mpeamento de rede escolha (02) zonas de disponibilidade e a VPC e subnet onde estão nossas instâncias publicas, em grupos de segurança devemos selecionar o Security group que criamos para o load balancer com o nome de "sg_load_balancer", em "Health chech" deixe selecionado target HTTP:80/index.php parao wordpress, deixe o restante padrão e caso tenha instancia criada adicione senão deixe em branco, revise o Load Balance e clique em criar.
+Na AWS ir em EC2 depois Load Balancers, para este projeto utilizaremos Classic Load Balancer(não recomendado), para isto mude para Criar Classic Load Balancer, nome ex: "wp-load-balancer", em esquema deixe como publico depois iremos mudar para privado, em mpeamento de rede escolha (02) zonas de disponibilidade e a VPC e subnet onde estão nossas instâncias publicas, em grupos de segurança devemos selecionar o Security group que criamos para o load balancer com o nome de "sg_load_balancer", em "Health chech" deixe selecionado target HTTP:80 pin path: /wp-admin/install.php para o wordpress, deixe o restante padrão e caso tenha instancia criada adicione senão deixe em branco, revise o Load Balance e clique em criar.
 
 <img src="img/wp-load-balance1.png" width="600" alt="">
 
