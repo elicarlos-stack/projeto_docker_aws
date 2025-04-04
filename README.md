@@ -169,6 +169,7 @@ Se você estiver acessando o RDS de fora (como do seu computador local), será n
 ## :heavy_check_mark: Criar grupo de segurança para o EFS 
 Ir em Security groups, create security groups de um nome exemplo: sg_efs_wordpress, descrição caso queira como grupo de segurança efs do wordpress, selecione a mesma VPC das instâncias, em Inbound rules adicione o tipo NFS, porta range deve estar como 2049 para liberar acesso para as regras de entrada da nossa instancia, em source deixe como custom e selecione o security group das instâncias.
 Em outbound deixe regras para "All trafic"  e clique em criar.
+
 <img src="img/sg-efs.png" width="600" alt="" />
 
 
@@ -222,6 +223,7 @@ Nesta etapa, adicione as Tags, caso necessário. Escolha a imagem AMI; neste pro
 <img src="img/ec2_instance2.png" width="600" alt="" />
 
 Em "Key pair" caso nao tenha criado uma chave clique para criar, usaremos esta chave para conectarmos a instancia via SSH. Escolha um nome para achave deixe o tipo criptografia como padrão (RSA) e formato do arquivo como <b>.pem</b> conforme a imagem abaixo e clique em criar chave (create key pair).
+
 <img src="img/chave.png" width="600" alt="" />
 
 Verifique se as informações estão corretas e clique em criar instância (Launch instance). 
