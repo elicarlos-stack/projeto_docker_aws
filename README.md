@@ -471,5 +471,3 @@ http://http://wp-load-balancer-1281376271.us-east-1.elb.amazonaws.com/
 
 O projeto pode sofrer altereações futuras.
 
-O projeto pode sofrer altereações futuras.
-
