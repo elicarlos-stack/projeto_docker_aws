@@ -1,7 +1,7 @@
 # 🙋‍♂️ Olá, meu nome é Elicarlos, Bem-vindo ao Meu Perfil no GitHub! 
 
 ## Sobre Mim
-Sou estudante de Segurança da Informação, e atualmente estou desenvolvendo habilidades em Linux, AWS e automação de processos na Compass.Uol.
+Sou estudante de Segurança da Informação, e atualmente estou desenvolvendo habilidades em Linux, Docker, na plataforma da AWS com automação de processos na Compass.Uol.
 
 ## Projetos
 - DevSecOps - Docker e Wordpress na AWS.
