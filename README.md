@@ -458,5 +458,11 @@ http://http://wp-load-balancer-1281376271.us-east-1.elb.amazonaws.com/
 
 <img src="img/web-wordpress1.png" width="600" alt="">
 
+# Conclusão:
+
+"Este projeto foi um grande desafio e me proporcionou a oportunidade de trabalhar com tecnologias em ambiente Cloud da AWS. Usei containers com Docker, que são ótimos para criar soluções escaláveis e flexíveis para hospedar o WordPress. Pude entender melhor como serviços como EC2, RDS, EFS, Load Balancer e Auto Scaling garantem eficiência e escalabilidade para lidar com diferentes níveis de demanda, enquanto a segurança é mantida por meio da configuração de VPCs e grupos de segurança. Além disso, aprendi que a integração com o CloudWatch não só automatiza os ajustes de capacidade, mas também oferece insights valiosos sobre o desempenho das instâncias, otimizando recursos e reduzindo custos. Foi uma experiência enriquecedora que mostrou como as tecnologias podem ser aplicadas de forma estratégica.
+
+O projeto pode sofrer altereações futuras.
+
 O projeto pode sofrer altereações futuras.
 
