@@ -133,7 +133,7 @@ Agora iremos editar em Routes para que elas tenham acesso a internet. ir em "edi
 
 <img src="img/route-table-private3.png" width="600" alt="" />
 
-## para facilitar podemos criar a VPC de forma automatica na opção VPC e muito mais (VPC and More)
+### Para facilitar podemos criar a VPC de forma automatica na opção VPC e muito mais (VPC and More)
 Todas as subnetes, route table, internet gatway, Nat Gateway serão criadas de forma automatica para isso acesse o Console AWS e vá para a seção VPC.
 Clique em Create VPC e selecione a opção VPC and more. Crie uma VPC com 2 sub-redes públicas e 2 sub-redes privadas. Selecione duas Availability Zones (AZs) e um NAT Gateway.Finalize a criação clicando em Create VPC.
 
