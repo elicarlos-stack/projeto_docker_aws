@@ -59,7 +59,7 @@ DevSecOps - Docker</div>
 Antes de criarmos a nossa Instância EC2 primeiramente vamos criar uma VPC na AWS com 2 subnets públicas e 2 subnets privadas. A VPC é um serviço da AWS que permite criar uma rede virtual isolada dentro da infraestrutura da AWS, para isto com o console aberto da Amazon AWS localize na barra de pesquisar por VPC para criar a VPC logo após criaremos as subnets, depois clique em create VPC ou selecione Your VPCs (suas VPCs) e criar VPC.
 
 
-<img src="img/img_vpc1.png" alt="Imagem inicial EC2" width="600px" hight="400px" />
+<img src="img/img_vpc1.png" alt="Imagem inicial EC2" width="800px" hight="600px" />
 
 
 Em VPC setting você pode escolher por criar através do VPC only ou VPC and more (Este modo permite criar a VPC junto com recursos adicionais necessários, como sub-redes, tabelas de rotas, gateways da Internet e gateways NAT). Neste exemplo escolheremos VPC only para criar de forma manual, após escolher informe um nome para vpc ex: "wp-docker-dev" e o bloco IPV4 CIDR para a VPC neste exemplo usei 172.18.0.0/20. as outras opções pode deixar como default e finalize clicando em criar VPC (Create VPC).
