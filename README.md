@@ -5,6 +5,7 @@ Sou estudante de Segurança da Informação, e atualmente estou desenvolvendo ha
 
 ## Projetos
 - DevSecOps - Docker e Wordpress na AWS.
+<img src="img/topologia.png">
 
 ## Contato
 - <a href="https://www.linkedin.com/in/elicarlos-amorim"><img src="https://github.com/user-attachments/assets/f29b36c0-ca83-4864-8e95-d8d27506b274" width="20"> LinkedIn</a>
@@ -30,6 +31,7 @@ Sou estudante de Segurança da Informação, e atualmente estou desenvolvendo ha
 ## :pushpin: Descrição do projeto:
 <div style="text-align: justify">
 DevSecOps - Docker</div>
+<img >
 
 ## :hammer: Ferramentas e Tecnologias Utilizadas:
 - **Linux (Server Ubuntu)**
