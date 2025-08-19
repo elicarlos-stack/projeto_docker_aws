@@ -82,11 +82,11 @@ Em VPC setting você pode escolher por criar através do VPC only ou VPC and mor
 > As tags são opcionais, mas recomenda-se atribuir nomes a elas, pois ajudam a categorizar e organizar seus recursos na AWS.
 
 <div>
-<img src="img/img_sub1.png" width="600" height="300" alt="" />
+<img src="img/img_sub1.png" width="600" width="600px" hight="400px" alt="" />
 
-<img src="img/img_sub2.png" width="600" height="300" alt="" />
+<img src="img/img_sub2.png" width="600" width="600px" hight="400px" alt="" />
 
-<img src="img/img_sub3.png" width="600" height="300" alt="" />
+<img src="img/img_sub3.png" width="600" width="600px" hight="400px" alt="" />
 
 </div>
 
